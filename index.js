@@ -1,6 +1,6 @@
 const redux = require('redux');
 const createStore = redux.createStore;
-
+const bindActionCreators= redux.bindActionCreators
 
 
 //TYPES
@@ -67,8 +67,13 @@ const unsubscribe=store.subscribe(()=>console.log('update state',store.getState(
 // ➤Handles unregistering of listeners via the function returned by subscribe(listener)
 // h
 //listener
-store.dispatch(orderCake());
-store.dispatch(orderCake());
+// store.dispatch(orderCake());
+// store.dispatch(orderCake());
+// store.dispatch(restockCake(5)) //there is qty of restocked of cakes
 
-store.dispatch(restockCake(5)) //there is qty of restocked of cakes
+const actions = bindActionCreators({orderCake,restockCake},store.dispatch)
+actions.orderCake();
+actions.orderCake();
+actions.orderCake();
+actions.restockCake(3);
 unsubscribe()
