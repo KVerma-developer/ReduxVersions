@@ -1,6 +1,7 @@
 
-const { configureStore } = require('@reduxjs/toolkit');
-const produce = require('immer').produce
+const { createStore, applyMiddleware } = require('redux');
+const produce = require('immer').produce;
+const { createLogger } = require('redux-logger');
 
 
 const STREET_UPDATED='STREET_UPDATED';
@@ -17,7 +18,7 @@ const updateStreet=(street,city)=>{
 const initialState={
     name:'ashneer',
     address:{
-        street:'Mall road',
+        street:'Mall',
         city:'Shimla',
         state:'HP'
     },
@@ -48,12 +49,14 @@ const reducer = (state = initialState, action) => {
     }
   };
 
-const store = configureStore({reducer});
-console.log('intial state', store.getState()) 
-const unsubscribe=store.subscribe(()=>console.log('update state',store.getState()))
+  const loggerMiddleware = createLogger();
 
-store.dispatch(updateStreet('mall ','sandila'))
-store.dispatch(updateStreet('kathmandu','lalitpur'));
+  const store = createStore(reducer, applyMiddleware(loggerMiddleware));
+console.log('intial state', store.getState()) 
+const unsubscribe=store.subscribe(()=>{})
+
+store.dispatch(updateStreet('quila street','Lucknow'))
+store.dispatch(updateStreet('Mall road','Shimla'));
 /* `unsubscribe()` is a function that is returned by the `store.subscribe()` method. It is used to
 unsubscribe or stop listening to changes in the store. In the given code, `unsubscribe()` is called
 after dispatching an action to the store and printing the updated state. This ensures that the
