@@ -1,5 +1,6 @@
 const redux = require('redux');
 const createStore = redux.createStore;
+const combineReducers = redux.combineReducers
 const bindActionCreators= redux.bindActionCreators
 
 
@@ -51,8 +52,11 @@ function restockIcecream(qty=1){
         };
 }
 
-const initialState={
+const initialCakeState={
 numOfCakes:10,
+cash:0
+}
+const initialIceCreamState={
 numOfIcecream:20,
 cash:0
 }
@@ -60,7 +64,7 @@ cash:0
 
 // ➤Allows state to be updated via dispatch(action)
 
-const cakeReducer=(state=initialState,action)=>{
+const cakeReducer=(state=initialCakeState,action)=>{
     switch(action.type){
         case CAKE_ORDER:
             return {
@@ -77,7 +81,17 @@ const cakeReducer=(state=initialState,action)=>{
                 numOfCakes: state.numOfCakes+ action.payload
 
 
-            }   
+            }
+
+                default :
+                return state
+            }
+
+
+}
+
+const iceCreamReducer=(state=initialIceCreamState,action)=>{
+    switch(action.type){
             
         case ICECREAM_ORDER:
             return{
@@ -103,7 +117,8 @@ const cakeReducer=(state=initialState,action)=>{
 
 
 // ➤Holds application state
-const store = createStore(cakeReducer);
+const rootReducer=combineReducers({cake:cakeReducer,iceCream:iceCreamReducer})
+const store = createStore(rootReducer);
 console.log('Intial state',store.getState());
 // >Registers listeners via subscribe(listener)
 const unsubscribe=store.subscribe(()=>console.log('update state',store.getState()))
@@ -119,7 +134,7 @@ const unsubscribe=store.subscribe(()=>console.log('update state',store.getState(
 const actions = bindActionCreators({orderCake,restockCake,orderIcecream,restockIcecream},store.dispatch)
 actions.orderCake(2);
 actions.orderCake();
-actions.restockCake(3);
+actions.restockCake(5);
 actions.orderIcecream(2);
-actions.restockIcecream(2);
+actions.restockIcecream(5);
 unsubscribe()
