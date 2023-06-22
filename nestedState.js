@@ -1,5 +1,6 @@
-const redux = require('redux');
-const createStore = redux.createStore;
+
+const { configureStore } = require('@reduxjs/toolkit');
+const produce = require('immer').produce
 
 
 const STREET_UPDATED='STREET_UPDATED';
@@ -27,24 +28,32 @@ const initialState={
 const reducer = (state = initialState, action) => {
     switch (action.type) {
       case STREET_UPDATED:
-        return {
-          ...state,
-          address: {
-            ...state.address,
-            street: action.payload,
-            city:action.payload1
-          }
-        };
+        // return {
+        //   ...state,
+        //   address: {
+        //     ...state.address,
+        //     street: action.payload,
+        //     city:action.payload1
+        //   }
+        // };
+        return produce(state,(draft)=>{
+            draft.address.street=action.payload,
+            draft.address.city=action.payload1
+
+
+
+        })
       default:
         return state;
     }
   };
 
-const store = redux.createStore(reducer);
+const store = configureStore({reducer});
 console.log('intial state', store.getState()) 
 const unsubscribe=store.subscribe(()=>console.log('update state',store.getState()))
 
 store.dispatch(updateStreet('mall ','sandila'))
+store.dispatch(updateStreet('kathmandu','lalitpur'));
 /* `unsubscribe()` is a function that is returned by the `store.subscribe()` method. It is used to
 unsubscribe or stop listening to changes in the store. In the given code, `unsubscribe()` is called
 after dispatching an action to the store and printing the updated state. This ensures that the
