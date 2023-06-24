@@ -3,13 +3,18 @@ const createStore = redux.createStore;
 const applyMiddleware = redux.applyMiddleware;
 const axios = require('axios')
 const thunkMiddleware =require("redux-thunk").default;
-//states
 
+
+//states
 const intialState={
     loading:false,
     users:[],
     error:'',
 }
+
+
+
+
 
 ///actions
 const FETCH_USERS_REQUESTED = 'FETCH_USERS_REQUESTED'
