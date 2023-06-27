@@ -1,2 +1,2 @@
 # ReduxVersions
-Redux | Redux Toolkit | Redux Toolkit with React
+Redux | Redux Toolkit 
